@@ -3,7 +3,8 @@
 # depois subistituir onde solicita o nome do usuario para continuar
 usuarios = ['Adriano',]
 
-tabelas = ['Adriano':,]
+tabelas = {'Adriano':[],}
+
 
 def main():
     print("\n=-=-= Sistema de Login =-=-=")
@@ -11,32 +12,34 @@ def main():
     print("2 - Criar novo Usuário")
     print("0 - Encerar sistema")
 
-    menuMain = int(input("Digite sua opção: "))
+    menuinicial = int(input("Digite sua opção: "))
 
-    if menuMain == 1:
+    if menuinicial == 1:
         login_usuario()
-    elif menuMain == 2:
+    elif menuinicial == 2:
         novo_usuario() 
-    elif menuMain == 0:
-        break 
+    elif menuinicial == 0:
+        raise SystemExit
+        # atexit.register(salvar_arquivo)
+        #
             # Subistituir pelo comando que a professa encinal na sala
             # para o comando que salvar o arquivo antes de fechar o programa.
     else:
         print("Opção inválida, tente novamente.")
         main()
 
-def login_usuario():
-    print(f"\n=-=-=-=-= Sistema de Login =-=-=-=-=")
 
-    nick=str(input("Nome de Usuário: "))
+def login_usuario():
+    print("\n=-=-=-=-= Sistema de Login =-=-=-=-=")
+    nick= input("Nome de Usuário: ")
 
     if nick in usuarios:
-        menu_cliente()
+        menu_cliente(nick)
     else:
         print("\n=-=-=-= Usuário não existe =-=-=-=")
         print("1 - Tentar novamente.")
         print("2 - Criar novo Usuário.")
-        print("0 - Encerar sistema")      
+        print("0 - voltar")      
 
         opcaoNaoExiste=int(input("\nDigite sua Opção: "))
 
@@ -45,21 +48,18 @@ def login_usuario():
         elif opcaoNaoExiste == 2:
             novo_usuario() 
         elif opcaoNaoExiste == 0:
-            break 
-            # Subistituir pelo comando que a professa encinal na sala
-            # para o comando que salvar o arquivo antes de fechar o programa.
+            main()
         else:
             print("Opção inválida.")
             print("Você sera redirecionado para o Menu inicial.")
             main()
 
 def novo_usuario():
-    print(f"\n=-=-=-=-= Novo Usuario =-=-=-=-=")
-
-    novoNick=str(input("Nome de Usúario: "))
+    print("\n=-=-=-=-= Novo Usuario =-=-=-=-=")
+    novoNick= input("Nome de Usúario: ")
 
     if novoNick in usuarios:
-        print("Este usúario ja existe, crie um novo Usuario.")
+        print("Este usúario ja existe, crie um Usuario novo.")
         novo_usuario()
     else:
         usuarios.append(novoNick)
@@ -82,26 +82,28 @@ def menu_cliente(nick):
     elif menuCliente == 3:
         deletar_tabela()
     elif menuCliente == 0:
-        main() 
+        main()
+
     else:
         print("Opção inválida. Tente novamente.")
 
-#PERGUNTAR A PROFESORA
 def criar_tabela(nick):
     print(f"\n=-=-=-= Nova Tavela =-=-=-=") 
-    novaTabela=str(input("Nome da Tabela: "))
+    novaTabela= input("Nome da Tabela: ")
     
     #Verifica se o usuario existe na biblioteca
     #E verifica se existe uma tebala com mesmo nome para aquele usuário
     if nick in tabelas and novaTabela in tabelas[nick]:
-        print(f"Você Ja tem uma tabela com nome {novaTabela}.")
+        print(f"Você Ja tem uma tabela com nome {novaTabela}.\nTente novamente.")
+        criar_tabela()
     else:
         #caso não tena a tabela, ele cria
         if nick in tabelas:
             tabelas[nick].append(novaTabela)
-            # não sei porque no (.append) não ta pegando, ja tentei varias maneiras
-            # na criação do Nick do usuario ele pega normal...
+            # testar se esta criando assim
+            #tabelas = { "andre": ["tabela1", "tabela2"]
             print("Nova Tabela criada com sucesso")
+            menu_cliente()
         else:
             #caso não exista o usuario dentro do dicionario, ele cria o nome dele
             # e depois coloca a nova tabela dentro dele
@@ -112,19 +114,17 @@ def criar_tabela(nick):
 
 def selecionar_tabela(nick):
     print(f"\n=-=-=-=-= Tabelas Registradas =-=-=-=-=")
-    print(nick)
-
     aTabela=str(input("Nome da Tabela: "))
 
     if aTabela in tabelas and nick in tabelas[aTabela]:
-        # ADICIONAR O COMANDO PARA  ABRIR A TABELA E E PODER ALTERAR ELA
-        with open('Arquivo.txt','w') as aTabela:
-            for edit in tabelas:
+        with open('Arquivo.txt','w+') as arquivo:
+            for editLinha in arquivo:
                 #grava cada item em uma nova linha
-                aTabela.write('%s\n' % edit)
+                arquivo.write('%s\n' % editLinha)
+                
     else:
         print(f"Tabala {aTabela} não existe. Tente novamente")
-        selecionar_tabela()
+        menu_cliente()
 
 
 def deletar_tabela(nick):
@@ -132,11 +132,17 @@ def deletar_tabela(nick):
     print(tabelas[nick])
 
     deletarTabela=str(input("Nome da tabela: "))
-    # remove também nao esta pegando
+    
     if deletarTabela in tabelas[nick]:
         tabelas[nick].remove(deletarTabela)
         print("Tabela deletada.")
         menu_cliente()
     else:
         print(f"Está tabela não existe, tente novamente.")
-        deletar_tabela()
+        menu_cliente()
+
+inicar = input("Digite 1: ")
+if inicar != -999:
+    main()
+else:
+    exit()
