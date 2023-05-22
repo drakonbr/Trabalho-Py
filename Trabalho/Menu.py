@@ -118,6 +118,10 @@ def selecionar_tabela(nick):
 
     if aTabela in tabelas and nick in tabelas[aTabela]:
         # ADICIONAR O COMANDO PARA  ABRIR A TABELA E E PODER ALTERAR ELA
+        with open('Arquivo.txt','w') as aTabela:
+            for edit in tabelas:
+                #grava cada item em uma nova linha
+                aTabela.write('%s\n' % edit)
     else:
         print(f"Tabala {aTabela} não existe. Tente novamente")
         selecionar_tabela()
