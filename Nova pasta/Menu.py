@@ -1,13 +1,12 @@
-import csv
 import os
 os.system("cls")
 
 separador = "=-=" * 11
-
+#\033  34m=> Azul |31m => Vermelho |33m => Amarelo
 def main():
     while True:
         print(f"\n\033[34m{separador}\033[m")
-        print("\tMenu Principal")
+        print("{:^34}".format("Menu Principal"))
         print(f"\033[34m{separador}\033[m\n")
         
         print("1 - Login do Usuário")
@@ -21,6 +20,7 @@ def main():
         elif menuinicial == '2':
             novo_usuario() 
         elif menuinicial == '0':
+            print("\n\033[31mPrograma Encerrado !\033[m\n\n")
             raise SystemExit
         elif menuinicial != '1' or menuinicial != '2' or menuinicial != '0':
             print("\033[31mOpção inválida.\033[m")
@@ -29,9 +29,8 @@ def main():
 
 def login_usuario():
     while True:
-
         print(f"\n\033[34m{separador}\033[m")
-        print("\tSistema de Login")
+        print("{:^34}".format("Sistema de Login"))
         print(f"\033[34m{separador}\033[m\n")
 
         with open('Usuarios.csv', 'rt+') as docLogins:
@@ -46,11 +45,9 @@ def login_usuario():
                 if senha == conta[1]:
                     menu_cliente(nick)
                 else:
-                    print("Senha errada")
+                    print("\033[34mSenha errada\033[m\n")
         else:
-            print(f"\n\033[34m{separador}\033[m")
-            print("\t\033[31mUsuário ou Senha errado.\033[m")
-            print(f"\033[34m{separador}\033[m\n")
+            print("\t\033[31mUsuário ou Senha errado.\033[m\n")
             print("1 - Tentar novamente.")
             print("2 - Criar novo Usuário.")
             print("0 - Voltar\n")
@@ -58,7 +55,7 @@ def login_usuario():
             opcaoNaoExiste = input("Digite sua Opção: ")
 
             if opcaoNaoExiste == '1':
-                continue  # Reinicia o loop para tentar novamente
+                print()
             elif opcaoNaoExiste == '2':
                 novo_usuario()
             elif opcaoNaoExiste == '0':
@@ -69,10 +66,11 @@ def login_usuario():
 def novo_usuario():
     while True:
         print(f"\n\033[34m{separador}\033[m")
-        print("\tNovo Usuario")
+        print("{:^34}".format("Novo Usuario"))
         print(f"\033[34m{separador}\033[m\n")
 
         novaConta = open('Usuarios.csv', 'rt+')
+
         texto = novaConta.read()
         lertexto = texto.split('\n')
         usuarios = [linha.split(',')[0] for linha in lertexto]
@@ -80,19 +78,19 @@ def novo_usuario():
         novoNick = input("Novo Usuário: ")
         #Caso seja encontrado algum usuario igual ele nao deixa criar
         if novoNick in usuarios:
-            print("\033[31m Este usuário já existe. Tente criar outro nome.\033[m")
+            print("\033[31m Este usuário já existe.\nTente criar outro nome!\033[m\n")
             novaConta.close()
         else:
             novaSenha = input("Senha: ")
             novaConta.write(f"{novoNick},{novaSenha}\n")
-            print("Novo usuário criado com sucesso.\n")
+            print("\033[33mNovo usuário criado.\033[m")
             novaConta.close()
             main()
 
 def menu_cliente(nick):
     while True:
         print(f"\n\033[34m{separador}\033[m")
-        print(f"\tUsuario - \033[33m{nick}\033[m") 
+        print("{:^38}".format(f"Usuario - \033[33m{nick}\033[m")) 
         print(f"\033[34m{separador}\033[m\n")
 
         print("1 - Adicionar Despesa")
@@ -118,11 +116,11 @@ def menu_cliente(nick):
 def criar_tabela(nick):
     while True:
         print(f"\033[34m{separador}\033[m")
-        print(f"\tNova Lista")
+        print("{:^33}".format("Nova Lista"))
         print(f"\033[34m{separador}\033[m\n")
 
         listadoUsuario = f"Arquivos/{nick}.csv"
-        #Listas.csv
+        
         with open(listadoUsuario, 'a') as arquivo:
             categoria = input("Tipo de Despesa: ")
             valor = float(input("Valor: "))
@@ -147,14 +145,15 @@ def criar_tabela(nick):
 def editar_despesa(nick):
     while True:
         print(f"\n\033[34m{separador}\033[m")
-        print(f"\tEditar Despesas")
+        print("{:^34}".format("Editar Despesas"))
         print(f"\033[34m{separador}\033[m\n")
 
         listadoUsuario = f"Arquivos/{nick}.csv"
+        
         with open(listadoUsuario, "r+") as docListas:
             linhas = docListas.readlines()
 
-            print("\n\tCategoria\t|\tValor\t|\t Dia\n")
+            print("{:<2} | {:<25} | {:<25} | {}".format("","\033[33mCategoria\033[m","\033[33mValor\033[m","\033[33mDia\033[m\n"))
 
             for i, usuario in enumerate(linhas):
                 conta = usuario.strip().split(',')
@@ -164,8 +163,8 @@ def editar_despesa(nick):
                     valor = conta[2]
                     dia = conta[3]
 
-                    catFormatada = (f"{categoria}\t\tR$ {valor}\t\t {dia}")
-                    print(f"{i + 1} - {catFormatada}")
+                    catFormatada = "- {:<19} R${:<17} {}".format(categoria.upper(), valor, dia, "")
+                    print(f"{i + 1} {catFormatada}")
 
             editarCat = int(input("\nNumero da Categoria: "))-1
 
@@ -182,7 +181,7 @@ def editar_despesa(nick):
                 if editartudo == '1':
 
                     editaCategoria = input("Nome da categoria: ")
-                    editarValor = input("Novo valor: ")
+                    editarValor = float(input("Novo valor: "))
                     EditarDia = input("Qual dia: ")
 
                     conta[1] = editaCategoria
@@ -195,33 +194,29 @@ def editar_despesa(nick):
                 elif editartudo == '2':
                     del linhas[editarCat]
                     print("Linha deletada com sucesso!")
-
                 elif editartudo == '0':
                     docListas.close()
                     menu_cliente(nick)
-
                 elif editartudo != '1' or editartudo != '2' or editartudo != '0':
                     print("\033[31mOpção inválida.\033[m")
             else:
                 editarCat = list(range(1, len(linhas) + 1))
-                print("Erro nas Categorias. Número inválido!")
-                print(f"Opções válidas: {editarCat}")
                 input("Tentar Novamente (Enter)")
-
         # Sobrescrever o arquivo com as alterações
         with open(listadoUsuario, "w") as docListas:
             docListas.writelines(linhas) 
 
 def mostrar_despesa(nick):
     print(f"\n\033[34m{separador}\033[m")
-    print(f"\t Total Despesas")
+    print("{:^34}".format("Total Despesas"))
     print(f"\033[34m{separador}\033[m\n")
 
     listadoUsuario = f"Arquivos/{nick}.csv"
+
     with open(listadoUsuario, "r+") as docListas:
         linhas = docListas.readlines()
 
-        print("\n\tCategoria\t|\tValor\t|\t Dia\n")
+        print("| {:<25} | {:<25} | {}".format("\033[33mCategoria\033[m","\033[33mValor\033[m","\033[33mDia\033[m\n"))
 
         for i, usuario in enumerate(linhas):
             conta = usuario.strip().split(',')
@@ -231,23 +226,31 @@ def mostrar_despesa(nick):
                 valor = conta[2]
                 dia = conta[3]
 
-                catFormatada = (f"{categoria}\t\tR$ {valor}\t\t {dia}")
-                print(f"{i + 1} - {catFormatada}")
-            
-            print("\n1 - Voltar Menu")
-            voltando = input("Sua opção: ")
-            if voltando == '1':
-                menu_cliente(nick)
+                catFormatada = "{:<20} R${:<17} {}".format(categoria.upper(), valor, dia, "")
+                print(catFormatada)
 
-            elif voltando != '1':
-                print("\033[31mOpção inválida.\033[m")
-        
+        somaDasDespesas = 0 
+        for usuario in linhas:
+            conta = usuario.strip().split(',')
+            valor = float(conta[2])  
+            somaDasDespesas += valor
+
+        print("\nDespesas totais: R$ ", somaDasDespesas)
+
+        print("1 - Voltar Menu\n")
+        voltando = input("Sua opção: ")
+
+        if voltando == '1':
+            menu_cliente(nick)
+        elif voltando != '1':
+            print("\033[31mOpção inválida.\033[m")
+            
 
 
 
 while True:
     print(f"\033[34m{separador}\033[m\n")
-    inicar = input("Aperte Enter: ")
+    inicar = input("{:^34}".format("Aperte Enter"))
     if inicar != "-999":
         main()
     else:
