@@ -1,3 +1,0 @@
-Nome: robert
-Login: login
-Saldo: R$247.50

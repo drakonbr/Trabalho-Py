@@ -1,3 +1,0 @@
-Nome: roberto
-Login: 500
-Saldo: R$29.70
