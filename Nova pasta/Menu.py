@@ -2,7 +2,7 @@ import os
 os.system("cls")
 
 separador = "=-=" * 11
-#\033  34m=> Azul |31m => Vermelho |33m => Amarelo
+#\033 | 31m => Vermelho |32m => Verde |33m => Amarelo 34m=> Azul | 
 def main():
     while True:
         print(f"\n\033[34m{separador}\033[m")
@@ -20,6 +20,7 @@ def main():
         elif menuinicial == '2':
             novo_usuario() 
         elif menuinicial == '0':
+            print ("\n\033[31mSISTEMA ESTÁ ENCERRADO.\033[m \n", "\n\033[32m Dados salvos com sucesso.\033 \n")
             raise SystemExit
         elif menuinicial != '1' or menuinicial != '2' or menuinicial != '0':
             print("\033[31mOpção inválida.\033[m")
@@ -74,7 +75,7 @@ def novo_usuario():
         
         texto = novaConta.read()
         lertexto = texto.split('\n')
-        usuarios = [linha.split(',')[0] for linha in lertexto]
+        usuarios = [linha.split(', \n')[0] for linha in lertexto]
         #Verifica por linha, os usuarios existentes
         novoNick = input("Novo Usuário: ")
         #Caso seja encontrado algum usuario igual ele nao deixa criar
@@ -97,7 +98,7 @@ def menu_cliente(nick):
 
             listadoUsuario = f"Arquivos/{nick}.csv"        
             with open(listadoUsuario, 'a') as arquivo:
-                arquivo.write(f"{nick},Zero,00,00")
+                arquivo.write("")
                 arquivo.close()
                     
             print("1 - Adicionar Despesa")
@@ -118,7 +119,7 @@ def menu_cliente(nick):
                 main()
             elif menuCliente != '1' or menuCliente != '2' or menuCliente != '0':
                 print("\033[31mOpção inválida.\033[m")
-        except:
+        except ValueError:
             print()
         
             
@@ -200,6 +201,7 @@ def editar_despesa(nick):
                     linhas[editarCat] = ",".join(conta) + "\n"
                     # Atualiza a linha no arquivo
                     print("Linha atualizada com sucesso!")
+                    docListas.close()
 
                 elif editartudo == '2':
                     del linhas[editarCat]
@@ -258,11 +260,11 @@ def mostrar_despesa(nick):
 
             
 
-while True:
 
+while True:
     print(f"\033[34m{separador}\033[m\n")
     inicar = input("{:^34}".format("1- Para iniciar"))
-    if inicar != "999":
+    if inicar != "9999":
         main()
     else:
         print("\033[31mOpção inválida.\033[m")
