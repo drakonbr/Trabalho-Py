@@ -90,7 +90,7 @@ def novo_usuario():
 
 def menu_cliente(nick):
     while True:
-        
+        try:
             print(f"\n\033[34m{separador}\033[m")
             print("{:^38}".format(f"Usuario - \033[33m{nick}\033[m")) 
             print(f"\033[34m{separador}\033[m\n")
@@ -118,6 +118,8 @@ def menu_cliente(nick):
                 main()
             elif menuCliente != '1' or menuCliente != '2' or menuCliente != '0':
                 print("\033[31mOpção inválida.\033[m")
+        except:
+            print()
         
             
 
