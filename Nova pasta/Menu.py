@@ -20,7 +20,7 @@ def main():
         elif menuinicial == '2':
             novo_usuario() 
         elif menuinicial == '0':
-            print ("\n\033[31mSISTEMA ESTÁ ENCERRADO.\033[m \n", "\n\033[32m Dados salvos com sucesso.\033 \n")
+            print ("\n\033[31mSISTEMA ESTÁ ENCERRADO.\033[m \n", "\n\033[32mDados salvos com sucesso!\033")
             raise SystemExit
         elif menuinicial != '1' or menuinicial != '2' or menuinicial != '0':
             print("\033[31mOpção inválida.\033[m")
@@ -198,7 +198,7 @@ def editar_despesa(nick):
                     conta[1] = editaCategoria
                     conta[2] = editarValor
                     conta[3] = EditarDia
-                    linhas[editarCat] = ",".join(conta) + "\n"
+                    linhas[editarCat] = ",".join(map(str, conta)) + "\n"
                     # Atualiza a linha no arquivo
                     print("Linha atualizada com sucesso!")
                     docListas.close()
