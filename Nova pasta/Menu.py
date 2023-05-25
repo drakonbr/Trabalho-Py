@@ -20,19 +20,19 @@ def main():
         elif menuinicial == '2':
             novo_usuario() 
         elif menuinicial == '0':
-            print("\n\033[31mPrograma Encerrado !\033[m\n\n")
             raise SystemExit
         elif menuinicial != '1' or menuinicial != '2' or menuinicial != '0':
             print("\033[31mOpção inválida.\033[m")
         else:
             print("\033[31mOpção inválida.\033[m")
 
+
 def login_usuario():
     while True:
         print(f"\n\033[34m{separador}\033[m")
         print("{:^34}".format("Sistema de Login"))
         print(f"\033[34m{separador}\033[m\n")
-
+        
         with open('Usuarios.csv', 'rt+') as docLogins:
             linhas = docLogins.readlines()
 
@@ -45,23 +45,23 @@ def login_usuario():
                 if senha == conta[1]:
                     menu_cliente(nick)
                 else:
-                    print("\033[34mSenha errada\033[m\n")
-        else:
-            print("\t\033[31mUsuário ou Senha errado.\033[m\n")
-            print("1 - Tentar novamente.")
-            print("2 - Criar novo Usuário.")
-            print("0 - Voltar\n")
+                    print(f"\033[34m{separador}\033[m")
+                    print("{:^34}".format("Usuário ou Senha errado."))
+                    print(f"\033[34m{separador}\033[m\n")
+                    print("1 - Tentar novamente.")
+                    print("2 - Criar novo Usuário.")
+                    print("0 - Voltar\n")
 
-            opcaoNaoExiste = input("Digite sua Opção: ")
+                    opcaoNaoExiste = input("Digite sua Opção: ")
 
-            if opcaoNaoExiste == '1':
-                print()
-            elif opcaoNaoExiste == '2':
-                novo_usuario()
-            elif opcaoNaoExiste == '0':
-                main()
-            else:
-                print("\033[31mOpção inválida.\033[m")
+                    if opcaoNaoExiste == '1':
+                        print()
+                    elif opcaoNaoExiste == '2':
+                        novo_usuario()
+                    elif opcaoNaoExiste == '0':
+                        main()
+                    else:
+                        print("\033[31mOpção inválida.\033[m")
 
 def novo_usuario():
     while True:
@@ -71,6 +71,7 @@ def novo_usuario():
 
         novaConta = open('Usuarios.csv', 'rt+')
 
+        
         texto = novaConta.read()
         lertexto = texto.split('\n')
         usuarios = [linha.split(',')[0] for linha in lertexto]
@@ -89,29 +90,36 @@ def novo_usuario():
 
 def menu_cliente(nick):
     while True:
-        print(f"\n\033[34m{separador}\033[m")
-        print("{:^38}".format(f"Usuario - \033[33m{nick}\033[m")) 
-        print(f"\033[34m{separador}\033[m\n")
+        
+            print(f"\n\033[34m{separador}\033[m")
+            print("{:^38}".format(f"Usuario - \033[33m{nick}\033[m")) 
+            print(f"\033[34m{separador}\033[m\n")
 
-        print("1 - Adicionar Despesa")
-        print("2 - Editar Despesa")
-        print("3 - Mostrar Despesas")
-        print("0 - Sair do Usuario\n")
+            listadoUsuario = f"Arquivos/{nick}.csv"        
+            with open(listadoUsuario, 'a') as arquivo:
+                arquivo.write(f"{nick},Zero,00,00")
+                arquivo.close()
+                    
+            print("1 - Adicionar Despesa")
+            print("2 - Editar Despesa")
+            print("3 - Mostrar Despesas")
+            print("0 - Sair do Usuario\n")
 
-        menuCliente = input("Digite sua opção: ")
+            menuCliente = input("Digite sua opção: ")
 
-        if menuCliente == '1':
-            print()
-            criar_tabela(nick)
-        elif menuCliente == '2':
-            editar_despesa(nick)
-        elif menuCliente == '3':
-            mostrar_despesa(nick)
-        elif menuCliente == '0':
-            main()
-        elif menuCliente != '1' or menuCliente != '2' or menuCliente != '0':
-            print("\033[31mOpção inválida.\033[m")
-
+            if menuCliente == '1':
+                print()
+                criar_tabela(nick)
+            elif menuCliente == '2':
+                editar_despesa(nick)
+            elif menuCliente == '3':
+                mostrar_despesa(nick)
+            elif menuCliente == '0':
+                main()
+            elif menuCliente != '1' or menuCliente != '2' or menuCliente != '0':
+                print("\033[31mOpção inválida.\033[m")
+        
+            
 
 def criar_tabela(nick):
     while True:
@@ -201,7 +209,10 @@ def editar_despesa(nick):
                     print("\033[31mOpção inválida.\033[m")
             else:
                 editarCat = list(range(1, len(linhas) + 1))
-                input("Tentar Novamente (Enter)")
+                debug = input("Tentar Novamente (Enter)")
+                if debug != '1':
+                    menu_cliente(nick)
+
         # Sobrescrever o arquivo com as alterações
         with open(listadoUsuario, "w") as docListas:
             docListas.writelines(linhas) 
@@ -237,21 +248,21 @@ def mostrar_despesa(nick):
 
         print("\nDespesas totais: R$ ", somaDasDespesas)
 
-        print("1 - Voltar Menu\n")
-        voltando = input("Sua opção: ")
+        voltando = input("\nVoltar (Enter)")
 
         if voltando == '1':
             menu_cliente(nick)
-        elif voltando != '1':
-            print("\033[31mOpção inválida.\033[m")
+            
+
             
 
 
 
-while True:
-    print(f"\033[34m{separador}\033[m\n")
-    inicar = input("{:^34}".format("Aperte Enter"))
-    if inicar != "-999":
-        main()
-    else:
-        print("Opção invalida")
+print(f"\033[34m{separador}\033[m\n")
+inicar = input("{:^34}".format("1- Para iniciar"))
+if inicar == "1":
+    main()
+elif inicar != '1' :
+    print("\033[31mOpção inválida.\033[m")
+else:
+    print("\033[31mOpção inválida.\033[m")
