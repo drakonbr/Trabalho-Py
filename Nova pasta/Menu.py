@@ -258,13 +258,11 @@ def mostrar_despesa(nick):
 
             
 
+while True:
 
-
-print(f"\033[34m{separador}\033[m\n")
-inicar = input("{:^34}".format("1- Para iniciar"))
-if inicar == "1":
-    main()
-elif inicar != '1' :
-    print("\033[31mOpção inválida.\033[m")
-else:
-    print("\033[31mOpção inválida.\033[m")
+    print(f"\033[34m{separador}\033[m\n")
+    inicar = input("{:^34}".format("1- Para iniciar"))
+    if inicar != "999":
+        main()
+    else:
+        print("\033[31mOpção inválida.\033[m")
