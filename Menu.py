@@ -3,6 +3,7 @@ os.system("cls")
 
 separador = "=-=" * 11
 #\033 | 31m => Vermelho |32m => Verde |33m => Amarelo 34m=> Azul | 
+
 def main():
     while True:
         print(f"\n\033[34m{separador}\033[m")
@@ -64,6 +65,7 @@ def login_usuario():
                     else:
                         print("\033[31mOpção inválida.\033[m")
 
+
 def novo_usuario():
     while True:
         print(f"\n\033[34m{separador}\033[m")
@@ -72,7 +74,6 @@ def novo_usuario():
 
         novaConta = open(f'{os.getcwd()}/Usuarios.csv', 'rt+')
 
-        
         texto = novaConta.read()
         lertexto = texto.split('\n')
         usuarios = [linha.split(', \n')[0] for linha in lertexto]
@@ -88,6 +89,7 @@ def novo_usuario():
             print("\033[33mNovo usuário criado.\033[m")
             novaConta.close()
             main()
+
 
 def menu_cliente(nick):
     while True:
@@ -121,7 +123,6 @@ def menu_cliente(nick):
                 print("\033[31mOpção inválida.\033[m")
         except ValueError:
             print()
-        
             
 
 def criar_tabela(nick):
@@ -220,6 +221,7 @@ def editar_despesa(nick):
         with open(listadoUsuario, "w") as docListas:
             docListas.writelines(linhas) 
 
+
 def mostrar_despesa(nick):
     print(f"\n\033[34m{separador}\033[m")
     print("{:^34}".format("Total Despesas"))
@@ -256,9 +258,6 @@ def mostrar_despesa(nick):
         if voltando == '1':
             menu_cliente(nick)
             
-
-            
-
 
 while True:
     print(f"\033[34m{separador}\033[m\n")
