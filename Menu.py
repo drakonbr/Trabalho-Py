@@ -176,8 +176,8 @@ def editar_despesa(nick):
 
                     catFormatada = "- {:<19} R${:<17} {}".format(categoria.upper(), valor, dia, "")
                     print(f"{i + 1} {catFormatada}")
-
-            editarCat = int(input("\nNumero da Categoria: "))-1
+            print("\nVoltar (Enter)")
+            editarCat = int(input("Numero da Categoria: "))-1
 
             if editarCat >= 0 and editarCat < len(linhas):
                 numeroLinha = linhas[editarCat]
@@ -212,7 +212,6 @@ def editar_despesa(nick):
                 elif editartudo != '1' or editartudo != '2' or editartudo != '0':
                     print("\033[31mOpção inválida.\033[m")
             else:
-                editarCat = list(range(1, len(linhas) + 1))
                 debug = input("Tentar Novamente (Enter)")
                 if debug != '1':
                     menu_cliente(nick)
